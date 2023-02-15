@@ -1,6 +1,6 @@
-from core.database import engine
+from app.core.database import engine
 from fastapi import FastAPI
-from schemas import models
+from app.schemas import models
 
 app = FastAPI()
 

@@ -1,6 +1,6 @@
 import enum
 
-from core.database import Base
+from app.core.database import Base
 from sqlalchemy import (
     Column,
     Date,
@@ -19,6 +19,14 @@ class UserTypeEnum(enum.Enum):
     admin = "admin"
     mentor = "mentor"
     trainee = "trainee"
+
+
+class GradePatternEnum(enum.Enum):
+    knowledge = "knowledge"
+    body_language = "body_language"
+    confidence = "confidence"
+    making_us_understand = "making_us_understand"
+    practical = "practical"
 
 
 session_attendee = Table(
@@ -86,8 +94,20 @@ class Grade(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_fk = Column(Integer, ForeignKey("user.id"))
     assignment_fk = Column(Integer, ForeignKey("assignment.id"))
-    grade = Column(Float)
+    total_score = Column(Float)
     result = Column(String)
     comment = Column(String)
 
     trainee_assignment = relationship("Assignment", back_populates="trainee_score")
+    grade_topic = relationship("GradePattern", back_populates="trainee_grade")
+
+
+class GradePattern(Base):
+    __tablename__ = "grade_pattern"
+
+    id = Column(Integer, primary_key=True, index=True)
+    grade_fk = Column(Integer, ForeignKey("grade.id"))
+    grade_type = Column(Enum(GradePatternEnum), default=GradePatternEnum.knowledge, nullable=True)
+    score = Column(Float)
+
+    trainee_grade = relationship("Grade", back_populates="grade_topic")
