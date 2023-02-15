@@ -107,7 +107,9 @@ class GradePattern(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     grade_fk = Column(Integer, ForeignKey("grade.id"))
-    grade_type = Column(Enum(GradePatternEnum), default=GradePatternEnum.knowledge, nullable=True)
+    grade_type = Column(
+        Enum(GradePatternEnum), default=GradePatternEnum.knowledge, nullable=True
+    )
     score = Column(Float)
 
     trainee_grade = relationship("Grade", back_populates="grade_topic")

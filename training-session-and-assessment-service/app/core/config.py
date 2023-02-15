@@ -18,12 +18,11 @@ class Settings(BaseSettings):
     DB_URI: str = f"{DB_SCHEMA}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     # security auth token
-    HASH_ALGORITHM:str = os.environ.get("HASH_ALGORITHM")
+    HASH_ALGORITHM: str = os.environ.get("HASH_ALGORITHM")
     ACCESS_TOKEN_EXPIRY_MINUTES: int = os.environ.get("ACCESS_TOKEN_EXPIRY_MINUTES")
     REFRESH_TOKEN_EXPIRY_MINUTES: int = os.environ.get("REFRESH_TOKEN_EXPIRY_MINUTES")
-    JWT_SECRET_KEY:str = os.environ.get("JWT_SECRET_KEY") 
-    JWT_REFRESH_SECRET_KEY:str = os.environ.get("JWT_REFRESH_SECRET_KEY")
-
+    JWT_SECRET_KEY: str = os.environ.get("JWT_SECRET_KEY")
+    JWT_REFRESH_SECRET_KEY: str = os.environ.get("JWT_REFRESH_SECRET_KEY")
 
     class Config:
         env_file = ".env"
