@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
 
 from app.core.config import settings
-from app.schemas.schemas import TokenData
+from app.schemas import models
+from fastapi import HTTPException, status
 from jose import JWTError, jwt
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
 
 
 def create_access_token(data: dict):
@@ -27,15 +30,28 @@ def create_refresh_token(data: dict):
     return encoded_jwt
 
 
-def verify_token(token: str, credentials_exception):
+def verify_token(token: str, credentials_exception, security_scopes, db: Session):
     try:
         payload = jwt.decode(
             token, settings.JWT_SECRET_KEY, algorithms=[settings.HASH_ALGORITHM]
         )
         email: str = payload.get("sub")
-        if email is None:
+        user_type: str = payload.get("user_type")
+        if email is None or user_type is None:
             raise credentials_exception
-        token_data = TokenData(email=email)
-    except JWTError:
+
+    except (JWTError, ValidationError):
         raise credentials_exception
-    return token_data
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if user is None:
+        raise credentials_exception
+
+    if payload.get("user_type") not in security_scopes.scopes:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not enough permissions",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    return user
