@@ -33,12 +33,12 @@ session_attendee = Table(
     "session_attendee",
     Base.metadata,
     Column("session_id", Integer(), ForeignKey("training_session.id")),
-    Column("user_id", Integer(), ForeignKey("user.id")),
+    Column("user_id", Integer(), ForeignKey("users.id")),
 )
 
 
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
@@ -59,7 +59,7 @@ class TrainingSession(Base):
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     total_time = Column(Integer)
-    user_fk = Column(Integer, ForeignKey("user.id"))
+    user_fk = Column(Integer, ForeignKey("users.id"))
     recording_link = Column(String)
     comment = Column(String)
     expected_attendees = Column(Integer)
@@ -92,7 +92,7 @@ class Grade(Base):
     __tablename__ = "grade"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_fk = Column(Integer, ForeignKey("user.id"))
+    user_fk = Column(Integer, ForeignKey("users.id"))
     assignment_fk = Column(Integer, ForeignKey("assignment.id"))
     total_score = Column(Float)
     result = Column(String)
