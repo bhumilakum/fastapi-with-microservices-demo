@@ -1,5 +1,5 @@
 from typing import Optional
-
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -11,6 +11,7 @@ class JWTToken(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[str] = None
+    expiry: datetime
 
 
 class User(BaseModel):
