@@ -1,7 +1,16 @@
 from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel
+from app.schemas.enums import UserTypeEnum
+from typing import List, Union
 
+from app.schemas.user import (
+    User,
+    ShowUser,
+    ShowUserList,
+    CreateUser,
+    UpdateUser
+)
 
 class JWTToken(BaseModel):
     access_token: str
@@ -12,19 +21,6 @@ class JWTToken(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
     expiry: datetime
-
-
-class User(BaseModel):
-    email: str
-    password: str
-    user_type: str
-
-
-class ShowUser(BaseModel):
-    email: str
-
-    class Config:
-        orm_mode = True
 
 
 class Login(BaseModel):
