@@ -1,5 +1,13 @@
+from datetime import datetime
 from typing import Optional
 
+from app.schemas.user import (  # noqa
+    CreateUser,
+    ShowUser,
+    ShowUserList,
+    UpdateUser,
+    User,
+)
 from pydantic import BaseModel
 
 
@@ -11,19 +19,7 @@ class JWTToken(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[str] = None
-
-
-class User(BaseModel):
-    email: str
-    password: str
-    user_type: str
-
-
-class ShowUser(BaseModel):
-    email: str
-
-    class Config:
-        orm_mode = True
+    expiry: datetime
 
 
 class Login(BaseModel):
