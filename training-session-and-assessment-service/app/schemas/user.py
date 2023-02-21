@@ -1,8 +1,7 @@
-from typing import Optional
-from datetime import datetime
-from pydantic import BaseModel
-from app.schemas.enums import UserTypeEnum
 from typing import List, Union
+
+from app.schemas.enums import UserTypeEnum
+from pydantic import BaseModel
 
 
 class User(BaseModel):
@@ -10,7 +9,7 @@ class User(BaseModel):
     user_type: UserTypeEnum
     first_name: Union[str, None] = None
     last_name: Union[str, None] = None
-    
+
 
 class ShowUser(User):
     id: int
@@ -27,12 +26,13 @@ class ShowUserList(BaseModel):
 
 class CreateUser(User):
     password: str
+
     class Config:
         orm_mode = True
 
 
 class UpdateUser(BaseModel):
-    email: Union[str, None] = None 
+    email: Union[str, None] = None
     first_name: Union[str, None] = None
     last_name: Union[str, None] = None
 

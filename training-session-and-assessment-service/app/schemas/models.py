@@ -1,5 +1,5 @@
 from app.core.database import Base
-from app.schemas.enums import UserTypeEnum, GradePatternEnum
+from app.schemas.enums import GradePatternEnum, UserTypeEnum
 from sqlalchemy import (
     Column,
     Date,
@@ -12,7 +12,6 @@ from sqlalchemy import (
     Table,
 )
 from sqlalchemy.orm import relationship
-
 
 session_attendee = Table(
     "session_attendee",

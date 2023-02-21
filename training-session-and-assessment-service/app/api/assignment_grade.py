@@ -1,14 +1,17 @@
-from sqlalchemy.orm import Session
-from app.schemas import models, schemas
-from fastapi import HTTPException, status
 from app.authentication.password_hashing import Hash
+from app.schemas import models, schemas
+
+# from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 def get_all(db: Session):
     pass
 
+
 def show(id: int, db: Session):
     pass
+
 
 def create(request: schemas.ShowUser, db: Session):
     new_user = models.User(
@@ -25,6 +28,6 @@ def create(request: schemas.ShowUser, db: Session):
 def update(id: int, request: schemas.User, db: Session):
     pass
 
+
 def delete(id: int, db: Session):
     pass
-

@@ -1,16 +1,15 @@
 from datetime import datetime, timedelta
 
+import pytz
 from app.core.config import settings
 from app.schemas import models, schemas
 from fastapi import HTTPException, status
-from jose import JWTError, jwt, ExpiredSignatureError
+from jose import ExpiredSignatureError, JWTError, jwt
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-import pytz
+utc = pytz.UTC
 
-
-utc=pytz.UTC
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -59,9 +58,9 @@ def verify_token(token: str, credentials_exception, security_scopes, db: Session
 
     if utc.localize(datetime.utcnow()) > token_data.expiry:
         print("token expire")
-        raise credentials_exception       
- 
-    if (security_scopes.scopes == ["all"]):
+        raise credentials_exception
+
+    if security_scopes.scopes == ["all"]:
         security_scopes.scopes = settings.USER_TYPE.split(",")
 
     if payload.get("user_type") not in security_scopes.scopes:

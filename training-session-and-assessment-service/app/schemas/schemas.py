@@ -1,16 +1,15 @@
-from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel
-from app.schemas.enums import UserTypeEnum
-from typing import List, Union
+from typing import Optional
 
-from app.schemas.user import (
-    User,
+from app.schemas.user import (  # noqa
+    CreateUser,
     ShowUser,
     ShowUserList,
-    CreateUser,
-    UpdateUser
+    UpdateUser,
+    User,
 )
+from pydantic import BaseModel
+
 
 class JWTToken(BaseModel):
     access_token: str
