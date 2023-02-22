@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Optional
 
 from app.schemas.enums import UserTypeEnum
 from pydantic import BaseModel
@@ -7,8 +7,8 @@ from pydantic import BaseModel
 class User(BaseModel):
     email: str
     user_type: UserTypeEnum
-    first_name: Union[str, None] = None
-    last_name: Union[str, None] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
 
 
 class ShowUser(User):
@@ -32,9 +32,9 @@ class CreateUser(User):
 
 
 class UpdateUser(BaseModel):
-    email: Union[str, None] = None
-    first_name: Union[str, None] = None
-    last_name: Union[str, None] = None
+    email: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
 
     class Config:
         orm_mode = True

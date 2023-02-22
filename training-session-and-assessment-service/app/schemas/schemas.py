@@ -1,6 +1,12 @@
 from datetime import datetime
 from typing import Optional
 
+from app.schemas.training_session import (  # noqa
+    CreateTrainingSession,
+    ShowTrainingSession,
+    ShowTrainingSessionList,
+    UpdateTrainingSession,
+)
 from app.schemas.user import (  # noqa
     CreateUser,
     ShowUser,
