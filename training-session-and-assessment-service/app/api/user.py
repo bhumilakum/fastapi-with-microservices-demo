@@ -4,14 +4,14 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 
-def is_user_exists(id: int, db: Session):
-    user = db.query(models.User).filter(models.User.id == id).first()
-    if user is None:
+def get_user_query(id: int, db: Session):
+    user_query = db.query(models.User).filter(models.User.id == id)
+    if user_query.first() is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"The user with the ID {id} is not found!",
         )
-    return user
+    return user_query, user_query.first()
 
 
 def get_all(db: Session, user_type: str, skip: int, limit: int):
@@ -31,7 +31,7 @@ def get_all(db: Session, user_type: str, skip: int, limit: int):
 
 
 def show(id: int, db: Session):
-    user = is_user_exists(id, db)
+    user_query, user = get_user_query(id, db)
     return user
 
 
@@ -50,14 +50,7 @@ def create(request: schemas.CreateUser, db: Session):
 
 
 def update(id: int, request: schemas.UpdateUser, db: Session):
-    user_query = db.query(models.User).filter(models.User.id == id)
-    user = user_query.first()
-
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"The user with the ID {id} is not found!",
-        )
+    user_query, user = get_user_query(id, db)
 
     user_query.update(request.dict(exclude_unset=True))
     db.commit()
@@ -67,9 +60,9 @@ def update(id: int, request: schemas.UpdateUser, db: Session):
 
 
 def delete(id: int, db: Session):
-    user = is_user_exists(id, db)
+    user_query, user = get_user_query(id, db)
 
-    db.delete(user)
+    user_query.delete()
     db.commit()
 
     return JSONResponse(content={"message": "The user has been deleted!"})

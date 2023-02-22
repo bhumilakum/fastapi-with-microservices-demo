@@ -39,7 +39,6 @@ class TrainingSession(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     topic = Column(String)
-    date = Column(Date)
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     total_time = Column(Integer)
@@ -78,6 +77,8 @@ class Grade(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_fk = Column(Integer, ForeignKey("users.id"))
     assignment_fk = Column(Integer, ForeignKey("assignment.id"))
+    submission_detail = Column(String)
+    submission_date = Column(Date)
     total_score = Column(Float)
     result = Column(String)
     comment = Column(String)
