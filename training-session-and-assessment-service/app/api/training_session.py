@@ -33,14 +33,18 @@ def validate_session_timing(start_time, end_time):
         )
 
 
-def get_all(db: Session, session_filter: str, skip: int, limit: int):
+def get_all(
+    db: Session, current_user: schemas.User, session_filter: str, skip: int, limit: int
+):
     try:
+        filter_dict = []
+        order_dict = [models.TrainingSession.start_time.desc()]
         if session_filter is not None:
             if session_filter == "today":
                 filter_dict = [
                     func.DATE(models.TrainingSession.start_time) == date.today()
                 ]
-                order_dict = []
+                order_dict = [models.TrainingSession.start_time]
             elif session_filter == "past":
                 filter_dict = [
                     func.DATE(models.TrainingSession.start_time) < date.today()
@@ -51,12 +55,19 @@ def get_all(db: Session, session_filter: str, skip: int, limit: int):
                     func.DATE(models.TrainingSession.start_time) > date.today()
                 ]
                 order_dict = [models.TrainingSession.start_time]
+            elif session_filter == "my_sessions":
+                if current_user.user_type.name in ["admin", "mentor"]:
+                    filter_dict = [models.TrainingSession.presenter == current_user]
+                    order_dict = [models.TrainingSession.start_time]
+                elif current_user.user_type.name == "trainee":
+                    filter_dict = [
+                        models.TrainingSession.attendees.contains(current_user)
+                    ]
+                else:
+                    pass
             else:
-                filter_dict = []
-                order_dict = [models.TrainingSession.start_time.desc()]
-        else:
-            filter_dict = []
-            order_dict = [models.TrainingSession.start_time.desc()]
+                pass
+
         training_sessions = (
             db.query(models.TrainingSession)
             .filter(*filter_dict)
@@ -86,7 +97,18 @@ def create(request: schemas.CreateTrainingSession, db: Session):
 
         total_time = get_time_difference_in_minute(request.start_time, request.end_time)
 
+        if "attendees" in request.dict(exclude_unset=True):
+            attendees = (
+                db.query(models.User)
+                .filter(models.User.id.in_(request.attendees))
+                .all()
+            )
+            if attendees is not None:
+                request.attendees = attendees
+                request.present_attendees = len(attendees)
+
         new_session = models.TrainingSession(**request.dict(), total_time=total_time)
+
         db.add(new_session)
         db.commit()
         db.refresh(new_session)
@@ -101,7 +123,9 @@ def create(request: schemas.CreateTrainingSession, db: Session):
 def update(id: int, request: schemas.UpdateTrainingSession, db: Session):
     training_session_query, training_session = get_training_session_query(id, db)
 
-    if "start_time" in request.dict() or "end_time" in request.dict():
+    if "start_time" in request.dict(exclude_unset=True) or "end_time" in request.dict(
+        exclude_unset=True
+    ):
         start_time = (
             request.start_time
             if "start_time" in request.dict(exclude_unset=True)
@@ -117,7 +141,18 @@ def update(id: int, request: schemas.UpdateTrainingSession, db: Session):
         total_time = get_time_difference_in_minute(start_time, end_time)
         request.total_time = total_time
 
-    training_session_query.update(request.dict(exclude_unset=True))
+    if "attendees" in request.dict(exclude_unset=True):
+        attendees = (
+            db.query(models.User).filter(models.User.id.in_(request.attendees)).all()
+        )
+        if attendees is not None:
+            training_session.attendees = attendees
+            training_session.present_attendees = len(attendees)
+        delattr(request, "attendees")
+
+    if request.dict(exclude_unset=True):
+        training_session_query.update(request.dict(exclude_unset=True))
+
     db.commit()
     db.refresh(training_session)
 

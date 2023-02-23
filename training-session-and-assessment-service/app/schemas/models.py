@@ -16,8 +16,10 @@ from sqlalchemy.orm import relationship
 session_attendee = Table(
     "session_attendee",
     Base.metadata,
-    Column("session_id", Integer(), ForeignKey("training_session.id")),
-    Column("user_id", Integer(), ForeignKey("users.id")),
+    Column(
+        "session_id", Integer(), ForeignKey("training_session.id", ondelete="SET NULL")
+    ),
+    Column("user_id", Integer(), ForeignKey("users.id", ondelete="SET NULL")),
 )
 
 
@@ -42,7 +44,7 @@ class TrainingSession(Base):
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     total_time = Column(Integer)
-    user_fk = Column(Integer, ForeignKey("users.id"))
+    user_fk = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
     recording_link = Column(String)
     comment = Column(String)
     expected_attendees = Column(Integer)
@@ -61,7 +63,9 @@ class Assignment(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
-    related_session = Column(Integer, ForeignKey("training_session.id"))
+    related_session = Column(
+        Integer, ForeignKey("training_session.id", ondelete="SET NULL")
+    )
     given_date = Column(Date)
     due_date = Column(Date)
     total_score = Column(Float)
@@ -75,8 +79,8 @@ class Grade(Base):
     __tablename__ = "grade"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_fk = Column(Integer, ForeignKey("users.id"))
-    assignment_fk = Column(Integer, ForeignKey("assignment.id"))
+    user_fk = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    assignment_fk = Column(Integer, ForeignKey("assignment.id", ondelete="SET NULL"))
     submission_detail = Column(String)
     submission_date = Column(Date)
     total_score = Column(Float)
@@ -91,7 +95,7 @@ class GradePattern(Base):
     __tablename__ = "grade_pattern"
 
     id = Column(Integer, primary_key=True, index=True)
-    grade_fk = Column(Integer, ForeignKey("grade.id"))
+    grade_fk = Column(Integer, ForeignKey("grade.id", ondelete="SET NULL"))
     grade_type = Column(
         Enum(GradePatternEnum), default=GradePatternEnum.knowledge, nullable=True
     )

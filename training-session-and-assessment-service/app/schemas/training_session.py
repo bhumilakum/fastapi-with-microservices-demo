@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from app.schemas.user import ShowUser
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 
 
 class ShowTrainingSession(BaseModel):
@@ -16,6 +16,7 @@ class ShowTrainingSession(BaseModel):
     comment: Optional[str] = None
     expected_attendees: Optional[int] = None
     present_attendees: Optional[int] = None
+    attendees: List[ShowUser]
 
     class Config:
         orm_mode = True
@@ -34,6 +35,10 @@ class CreateTrainingSession(BaseModel):
     user_fk: int
     comment: Optional[str] = None
     expected_attendees: Optional[int] = None
+    attendees: List[int] = []
+
+    class Config:
+        extra = Extra.allow
 
 
 class UpdateTrainingSession(BaseModel):
@@ -42,5 +47,10 @@ class UpdateTrainingSession(BaseModel):
     end_time: Optional[datetime] = None
     total_time: Optional[int] = None
     user_fk: Optional[int] = None
+    recording_link: Optional[str] = None
     comment: Optional[str] = None
     expected_attendees: Optional[int] = None
+    attendees: List[int] = []
+
+    class Config:
+        extra = Extra.allow
