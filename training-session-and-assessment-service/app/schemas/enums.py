@@ -13,3 +13,10 @@ class GradePatternEnum(enum.Enum):
     confidence = "confidence"
     making_us_understand = "making_us_understand"
     practical = "practical"
+
+
+class TrainingSessionFilter(str, enum.Enum):
+    today = "today"
+    past = "past"
+    upcoming = "upcoming"
+    my_sessions = "my_sessions"
