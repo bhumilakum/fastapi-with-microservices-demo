@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List, Optional
 
-from app.schemas import training_session
+from app.schemas.schemas_training_session import ShowTrainingSessionFew
 from pydantic import BaseModel, Field
 
 
@@ -9,7 +9,20 @@ class ShowAssignment(BaseModel):
     id: int
     title: str
     description: Optional[str] = None
-    session: training_session.ShowTrainingSessionFew
+    session: ShowTrainingSessionFew
+    given_date: date
+    due_date: date
+    total_score: float
+    passing_score: float
+
+    class Config:
+        orm_mode = True
+
+
+class ShowAssignmentFew(BaseModel):
+    id: int
+    title: str
+    description: Optional[str] = None
     given_date: date
     due_date: date
     total_score: float

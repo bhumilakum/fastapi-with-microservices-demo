@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytz
 from app.core.config import settings
-from app.schemas import models, schemas
+from app.schemas import models, schemas_authentication
 from fastapi import HTTPException, status
 from jose import ExpiredSignatureError, JWTError, jwt
 from pydantic import ValidationError
@@ -42,7 +42,7 @@ def verify_token(token: str, credentials_exception, security_scopes, db: Session
         user_type: str = payload.get("user_type")
         expiry: int = payload.get("exp")
 
-        token_data = schemas.TokenData(email=email, expiry=expiry)
+        token_data = schemas_authentication.TokenData(email=email, expiry=expiry)
 
         if email is None or user_type is None or expiry is None:
             raise credentials_exception

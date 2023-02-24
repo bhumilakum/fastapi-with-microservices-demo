@@ -1,6 +1,6 @@
 from datetime import date
 
-from app.schemas import models, schemas
+from app.schemas import models, schemas_training_session, schemas_user
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import func
@@ -34,7 +34,11 @@ def validate_session_timing(start_time, end_time):
 
 
 def get_all(
-    db: Session, current_user: schemas.User, session_filter: str, skip: int, limit: int
+    db: Session,
+    current_user: schemas_user.User,
+    session_filter: str,
+    skip: int,
+    limit: int,
 ):
     try:
         filter_dict = []
@@ -90,7 +94,7 @@ def show(id: int, db: Session):
     return training_session
 
 
-def create(request: schemas.CreateTrainingSession, db: Session):
+def create(request: schemas_training_session.CreateTrainingSession, db: Session):
     try:
         validate_session_timing(request.start_time, request.end_time)
 
@@ -119,7 +123,9 @@ def create(request: schemas.CreateTrainingSession, db: Session):
         )
 
 
-def update(id: int, request: schemas.UpdateTrainingSession, db: Session):
+def update(
+    id: int, request: schemas_training_session.UpdateTrainingSession, db: Session
+):
     training_session_query, training_session = get_training_session_query(id, db)
 
     if "start_time" in request.dict(exclude_unset=True) or "end_time" in request.dict(

@@ -1,4 +1,4 @@
-from app.schemas import models, schemas
+from app.schemas import models, schemas_user
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -35,7 +35,7 @@ def show(id: int, db: Session):
     return user
 
 
-def create(request: schemas.CreateUser, db: Session):
+def create(request: schemas_user.CreateUser, db: Session):
     try:
         new_user = models.User(**request.dict())
         db.add(new_user)
@@ -49,7 +49,7 @@ def create(request: schemas.CreateUser, db: Session):
         )
 
 
-def update(id: int, request: schemas.UpdateUser, db: Session):
+def update(id: int, request: schemas_user.UpdateUser, db: Session):
     user_query, user = get_user_query(id, db)
 
     user_query.update(request.dict(exclude_unset=True))

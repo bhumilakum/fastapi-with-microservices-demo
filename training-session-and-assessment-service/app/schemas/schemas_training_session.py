@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Optional
 
-from app.schemas.user import ShowUser
+from app.schemas.schemas_user import ShowUser
 from pydantic import BaseModel, Extra
 
 
