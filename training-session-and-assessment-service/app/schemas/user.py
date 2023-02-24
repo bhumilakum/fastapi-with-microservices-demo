@@ -32,7 +32,6 @@ class CreateUser(User):
 
 
 class UpdateUser(BaseModel):
-    email: Optional[str] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
 

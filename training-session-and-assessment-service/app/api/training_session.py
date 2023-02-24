@@ -86,8 +86,7 @@ def get_all(
 
 def show(id: int, db: Session):
     training_session_query, training_session = get_training_session_query(id, db)
-    print(type(training_session.start_time.date()))
-    print(type(date.today()))
+
     return training_session
 
 
