@@ -34,6 +34,7 @@ class User(Base):
     user_type = Column(Enum(UserTypeEnum), default=UserTypeEnum.mentor, nullable=False)
 
     training_sessions = relationship("TrainingSession", back_populates="presenter")
+    assignment_grade = relationship("Submission", back_populates="trainee_user")
 
 
 class TrainingSession(Base):
@@ -72,10 +73,10 @@ class Assignment(Base):
     passing_score = Column(Float)
 
     session = relationship("TrainingSession", back_populates="training_assignment")
-    trainee_score = relationship("Grade", back_populates="trainee_assignment")
+    trainee_score = relationship("Submission", back_populates="trainee_assignment")
 
 
-class Grade(Base):
+class Submission(Base):
     __tablename__ = "grade"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -87,6 +88,7 @@ class Grade(Base):
     result = Column(String)
     comment = Column(String)
 
+    trainee_user = relationship("User", back_populates="assignment_grade")
     trainee_assignment = relationship("Assignment", back_populates="trainee_score")
     grade_topic = relationship("GradePattern", back_populates="trainee_grade")
 
@@ -101,4 +103,4 @@ class GradePattern(Base):
     )
     score = Column(Float)
 
-    trainee_grade = relationship("Grade", back_populates="grade_topic")
+    trainee_grade = relationship("Submission", back_populates="grade_topic")

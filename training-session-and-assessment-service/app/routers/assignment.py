@@ -1,33 +1,36 @@
-from app.api import training_session
+from datetime import date
+from typing import Union
+
+from app.api import assignment
 from app.authentication import oauth2
 from app.core import database
 from app.schemas import schemas
-from app.schemas.enums import TrainingSessionFilter
-from fastapi import APIRouter, Depends, Security, status
+from fastapi import APIRouter, Depends, Query, Security, status
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/training_session", tags=["TrainingSessions"])
+router = APIRouter(prefix="/training_assignment", tags=["TrainingAssignments"])
 
 
-@router.get("/", response_model=schemas.ShowTrainingSessionList)
+@router.get("/", response_model=schemas.ShowAssignmentList)
 def get_all(
     db: Session = Depends(database.get_db),
     current_user: schemas.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor", "trainee"]
     ),
-    # session_filter: Optional[str] = Query(
-    #     None,
-    #     description="Session filter based on timimngs (today, past, upcoming)",
-    #     regex=r"^\btoday\b$|^\bpast\b$|^\bupcoming\b$|^\bmy_sessions\b$",
-    # ),
-    session_filter: TrainingSessionFilter = None,
+    title: Union[str, None] = None,
+    given_date: Union[date, None] = Query(
+        default=None, description="format: YYYY-MM-DD"
+    ),
+    due_date: Union[date, None] = Query(default=None, description="format: YYYY-MM-DD"),
     skip: int = 0,
     limit: int = 50,
 ):
-    return training_session.get_all(db, current_user, session_filter, skip, limit)
+    return assignment.get_all(
+        db, current_user, title, given_date, due_date, skip, limit
+    )
 
 
-@router.get("/{id}", response_model=schemas.ShowTrainingSession)
+@router.get("/{id}", response_model=schemas.ShowAssignment)
 def show(
     id: int,
     db: Session = Depends(database.get_db),
@@ -35,34 +38,34 @@ def show(
         oauth2.get_current_user, scopes=["admin", "mentor", "trainee"]
     ),
 ):
-    return training_session.show(id, db)
+    return assignment.show(id, db)
 
 
 @router.post(
     "/create",
-    response_model=schemas.ShowTrainingSession,
+    response_model=schemas.ShowAssignment,
     status_code=status.HTTP_201_CREATED,
 )
 def create(
-    request: schemas.CreateTrainingSession,
+    request: schemas.CreateAssignment,
     db: Session = Depends(database.get_db),
     current_user: schemas.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return training_session.create(request, db)
+    return assignment.create(request, db)
 
 
-@router.patch("/{id}", response_model=schemas.ShowTrainingSession)
+@router.patch("/{id}", response_model=schemas.ShowAssignment)
 def update(
     id: int,
-    request: schemas.UpdateTrainingSession,
+    request: schemas.UpdateAssignment,
     db: Session = Depends(database.get_db),
     current_user: schemas.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return training_session.update(id, request, db)
+    return assignment.update(id, request, db)
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -73,4 +76,4 @@ def delete(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return training_session.delete(id, db)
+    return assignment.delete(id, db)

@@ -1,9 +1,17 @@
 from datetime import datetime
 from typing import Optional
 
+from app.schemas.assignment import (  # noqa
+    CreateAssignment,
+    ShowAssignment,
+    ShowAssignmentList,
+    UpdateAssignment,
+)
 from app.schemas.training_session import (  # noqa
     CreateTrainingSession,
+    ShowAssignmentFew,
     ShowTrainingSession,
+    ShowTrainingSessionFew,
     ShowTrainingSessionList,
     UpdateTrainingSession,
 )

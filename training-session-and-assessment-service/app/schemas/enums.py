@@ -20,3 +20,12 @@ class TrainingSessionFilter(str, enum.Enum):
     past = "past"
     upcoming = "upcoming"
     my_sessions = "my_sessions"
+
+
+class AssignmentFilter(str, enum.Enum):
+    added_today = "added_today"
+    due_today = "due_today"
+    submitted_today = "submitted_today"
+    my_submission = "my_submission"
+    pending_submission = "pending_submission"
+    due_submission = "due_submission"
