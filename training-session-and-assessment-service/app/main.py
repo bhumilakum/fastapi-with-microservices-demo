@@ -1,11 +1,5 @@
 from app.core.database import engine
-from app.routers import (
-    assignment,
-    assignment_grade,
-    authentication,
-    training_session,
-    user,
-)
+from app.routers import assignment, authentication, training_session, user
 from app.schemas import models
 from fastapi import FastAPI
 
@@ -17,7 +11,6 @@ app.include_router(authentication.router)
 app.include_router(user.router)
 app.include_router(training_session.router)
 app.include_router(assignment.router)
-app.include_router(assignment_grade.router)
 
 
 # @app.get("/")

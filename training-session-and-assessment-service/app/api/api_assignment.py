@@ -1,6 +1,6 @@
 from datetime import date
 
-from app.schemas import models, schemas
+from app.schemas import models, schemas_assignment, schemas_user
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -34,7 +34,7 @@ def validate_assignment_score(total_score, passing_score):
 
 def get_all(
     db: Session,
-    current_user: schemas.User,
+    current_user: schemas_user.User,
     title: str,
     given_date: date,
     due_date: date,
@@ -74,7 +74,7 @@ def show(id: int, db: Session):
     return assignment
 
 
-def create(request: schemas.CreateAssignment, db: Session):
+def create(request: schemas_assignment.CreateAssignment, db: Session):
     try:
         validate_submission_dates(request.given_date, request.due_date)
         validate_assignment_score(request.total_score, request.passing_score)
@@ -92,7 +92,7 @@ def create(request: schemas.CreateAssignment, db: Session):
         )
 
 
-def update(id: int, request: schemas.UpdateAssignment, db: Session):
+def update(id: int, request: schemas_assignment.UpdateAssignment, db: Session):
     assignment_query, assignment = get_assignment_query(id, db)
 
     if "given_date" in request.dict(exclude_unset=True) or "due_date" in request.dict(

@@ -1,19 +1,19 @@
 from typing import Optional
 
-from app.api import user
+from app.api import api_user
 from app.authentication import oauth2
 from app.core import database
-from app.schemas import schemas
+from app.schemas import schemas_user
 from fastapi import APIRouter, Depends, Query, Security, status
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/user", tags=["Users"])
 
 
-@router.get("/", response_model=schemas.ShowUserList)
+@router.get("/", response_model=schemas_user.ShowUserList)
 def get_all(
     db: Session = Depends(database.get_db),
-    current_user: schemas.User = Security(
+    current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
     user_type: Optional[str] = Query(
@@ -24,51 +24,53 @@ def get_all(
     skip: int = 0,
     limit: int = 50,
 ):
-    return user.get_all(db, user_type, skip, limit)
+    return api_user.get_all(db, user_type, skip, limit)
 
 
-@router.get("/{id}", response_model=schemas.ShowUser)
+@router.get("/{id}", response_model=schemas_user.ShowUser)
 def show(
     id: int,
     db: Session = Depends(database.get_db),
-    current_user: schemas.User = Security(
+    current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return user.show(id, db)
+    return api_user.show(id, db)
 
 
 @router.post(
-    "/create", response_model=schemas.ShowUser, status_code=status.HTTP_201_CREATED
+    "/create", response_model=schemas_user.ShowUser, status_code=status.HTTP_201_CREATED
 )
 def create(
-    request: schemas.CreateUser,
+    request: schemas_user.CreateUser,
     db: Session = Depends(database.get_db),
-    current_user: schemas.User = Security(
+    current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return user.create(request, db)
+    return api_user.create(request, db)
 
 
 @router.patch(
-    "/{id}", response_model=schemas.ShowUser, status_code=status.HTTP_202_ACCEPTED
+    "/{id}", response_model=schemas_user.ShowUser, status_code=status.HTTP_202_ACCEPTED
 )
 def update(
     id: int,
-    request: schemas.UpdateUser,
+    request: schemas_user.UpdateUser,
     db: Session = Depends(database.get_db),
-    current_user: schemas.User = Security(
+    current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return user.update(id, request, db)
+    return api_user.update(id, request, db)
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(
     id: int,
     db: Session = Depends(database.get_db),
-    current_user: schemas.User = Security(oauth2.get_current_user, scopes=["admin"]),
+    current_user: schemas_user.User = Security(
+        oauth2.get_current_user, scopes=["admin"]
+    ),
 ):
-    return user.delete(id, db)
+    return api_user.delete(id, db)
