@@ -1,10 +1,8 @@
-from typing import Optional
-
 from app.api import api_user
 from app.authentication import oauth2
 from app.core import database
-from app.schemas import schemas_user
-from fastapi import APIRouter, Depends, Query, Security, status
+from app.schemas import enums, schemas_user
+from fastapi import APIRouter, Depends, Security, status
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/user", tags=["Users"])
@@ -16,11 +14,12 @@ def get_all(
     current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
-    user_type: Optional[str] = Query(
-        None,
-        description="User type wise filter (admin, mentor, trainee)",
-        regex=r"^\badmin\b$|^\bmentor\b$|^\btrainee\b$",
-    ),
+    # user_type: Optional[str] = Query(
+    #     None,
+    #     description="User type wise filter (admin, mentor, trainee)",
+    #     regex=r"^\badmin\b$|^\bmentor\b$|^\btrainee\b$",
+    # ),
+    user_type: enums.UserTypeEnum = None,
     skip: int = 0,
     limit: int = 50,
 ):

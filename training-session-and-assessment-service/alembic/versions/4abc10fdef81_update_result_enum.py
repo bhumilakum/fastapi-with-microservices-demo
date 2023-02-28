@@ -1,14 +1,13 @@
-"""rename model from Grade to Submission
+"""update result enum
 
-Revision ID: 2eab7ff80918
-Revises: 37d78a7a50cb
-Create Date: 2023-02-24 19:33:54.953119
+Revision ID: 4abc10fdef81
+Revises: f13922b8b8d9
+Create Date: 2023-02-27 22:25:19.828426
 
 """
-
 # revision identifiers, used by Alembic.
-revision = "2eab7ff80918"
-down_revision = "37d78a7a50cb"
+revision = "4abc10fdef81"
+down_revision = "f13922b8b8d9"
 branch_labels = None
 depends_on = None
 

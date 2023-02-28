@@ -22,11 +22,12 @@ def get_all(
         default=None, description="format: YYYY-MM-DD"
     ),
     due_date: Union[date, None] = Query(default=None, description="format: YYYY-MM-DD"),
+    session: Union[int, None] = None,
     skip: int = 0,
     limit: int = 50,
 ):
     return api_assignment.get_all(
-        db, current_user, title, given_date, due_date, skip, limit
+        db, current_user, title, given_date, due_date, session, skip, limit
     )
 
 

@@ -1,5 +1,5 @@
 from app.core.database import Base
-from app.schemas.enums import GradePatternEnum, UserTypeEnum
+from app.schemas.enums import SubmissionResultEnum, UserTypeEnum
 from sqlalchemy import (
     Column,
     Date,
@@ -10,6 +10,7 @@ from sqlalchemy import (
     Integer,
     String,
     Table,
+    func,
 )
 from sqlalchemy.orm import relationship
 
@@ -23,21 +24,28 @@ session_attendee = Table(
 )
 
 
-class User(Base):
+class BaseColumn(object):
+    created_on = Column(DateTime, server_default=func.now())
+    updated_on = Column(
+        DateTime, server_default=func.now(), onupdate=func.current_timestamp()
+    )
+
+
+class User(Base, BaseColumn):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
-    email = Column(String)
+    email = Column(String, unique=True)
     password = Column(String)
     user_type = Column(Enum(UserTypeEnum), default=UserTypeEnum.mentor, nullable=False)
 
     training_sessions = relationship("TrainingSession", back_populates="presenter")
-    assignment_grade = relationship("Submission", back_populates="trainee_user")
+    submission_user = relationship("Submission", back_populates="trainee_user")
 
 
-class TrainingSession(Base):
+class TrainingSession(Base, BaseColumn):
     __tablename__ = "training_session"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -58,7 +66,7 @@ class TrainingSession(Base):
     training_assignment = relationship("Assignment", back_populates="session")
 
 
-class Assignment(Base):
+class Assignment(Base, BaseColumn):
     __tablename__ = "assignment"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -76,31 +84,35 @@ class Assignment(Base):
     trainee_score = relationship("Submission", back_populates="trainee_assignment")
 
 
-class Submission(Base):
-    __tablename__ = "grade"
+class Submission(Base, BaseColumn):
+    __tablename__ = "submission"
 
     id = Column(Integer, primary_key=True, index=True)
     user_fk = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
     assignment_fk = Column(Integer, ForeignKey("assignment.id", ondelete="SET NULL"))
     submission_detail = Column(String)
     submission_date = Column(Date)
-    total_score = Column(Float)
-    result = Column(String)
-    comment = Column(String)
+    obtained_score = Column(Float)
+    result = Column(Enum(SubmissionResultEnum), nullable=True)
+    submission_comment = Column(String)
+    mentor_remarks = Column(String)
 
-    trainee_user = relationship("User", back_populates="assignment_grade")
+    trainee_user = relationship("User", back_populates="submission_user")
     trainee_assignment = relationship("Assignment", back_populates="trainee_score")
-    grade_topic = relationship("GradePattern", back_populates="trainee_grade")
+    submission_grade = relationship(
+        "Grade", uselist=False, back_populates="related_submission"
+    )
 
 
-class GradePattern(Base):
-    __tablename__ = "grade_pattern"
+class Grade(Base, BaseColumn):
+    __tablename__ = "grade"
 
     id = Column(Integer, primary_key=True, index=True)
-    grade_fk = Column(Integer, ForeignKey("grade.id", ondelete="SET NULL"))
-    grade_type = Column(
-        Enum(GradePatternEnum), default=GradePatternEnum.knowledge, nullable=True
-    )
-    score = Column(Float)
+    submission_fk = Column(Integer, ForeignKey("submission.id", ondelete="SET NULL"))
+    knowledge = Column(Float)
+    body_language = Column(Float)
+    confidence = Column(Float)
+    making_us_understand = Column(Float)
+    practical = Column(Float)
 
-    trainee_grade = relationship("Submission", back_populates="grade_topic")
+    related_submission = relationship("Submission", back_populates="submission_grade")

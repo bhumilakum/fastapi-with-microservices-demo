@@ -1,3 +1,4 @@
+from app.authentication.password_hashing import Hash
 from app.schemas import models, schemas_user
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
@@ -37,6 +38,7 @@ def show(id: int, db: Session):
 
 def create(request: schemas_user.CreateUser, db: Session):
     try:
+        request.password = Hash.bcrypt(request.password)
         new_user = models.User(**request.dict())
         db.add(new_user)
         db.commit()

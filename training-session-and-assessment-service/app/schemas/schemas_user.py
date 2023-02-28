@@ -18,6 +18,11 @@ class ShowUser(User):
         orm_mode = True
 
 
+class ShowUserFew(BaseModel):
+    id: int
+    email: str
+
+
 class ShowUserList(BaseModel):
     users: List[ShowUser]
     skip: int

@@ -38,6 +38,7 @@ def get_all(
     title: str,
     given_date: date,
     due_date: date,
+    session: int,
     skip: int,
     limit: int,
 ):
@@ -52,6 +53,8 @@ def get_all(
             filter_dict.append(models.Assignment.given_date == given_date)
         if due_date is not None:
             filter_dict.append(models.Assignment.due_date == due_date)
+        if session is not None:
+            filter_dict.append(models.Assignment.related_session == session)
 
         assignments = (
             db.query(models.Assignment)
