@@ -7,14 +7,6 @@ class UserTypeEnum(enum.Enum):
     trainee = "trainee"
 
 
-class GradePatternEnum(enum.Enum):
-    knowledge = "knowledge"
-    body_language = "body_language"
-    confidence = "confidence"
-    making_us_understand = "making_us_understand"
-    practical = "practical"
-
-
 class TrainingSessionFilter(str, enum.Enum):
     today = "today"
     past = "past"
@@ -22,10 +14,14 @@ class TrainingSessionFilter(str, enum.Enum):
     my_sessions = "my_sessions"
 
 
-class AssignmentFilter(str, enum.Enum):
-    added_today = "added_today"
-    due_today = "due_today"
+class SubmissionFilter(str, enum.Enum):
     submitted_today = "submitted_today"
-    my_submission = "my_submission"
-    pending_submission = "pending_submission"
-    due_submission = "due_submission"
+    graded_submission = "graded_submission"
+    pending_to_grade = "pending_to_grade"
+    submission_result_PASS = "submission_result_PASS"
+    submission_result_FAIL = "submission_result_FAIL"
+
+
+class SubmissionResultEnum(enum.Enum):
+    PASS = "pass"
+    FAIL = "fail"

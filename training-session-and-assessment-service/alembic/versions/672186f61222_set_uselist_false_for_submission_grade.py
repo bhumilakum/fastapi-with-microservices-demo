@@ -1,13 +1,14 @@
-"""update grade model
+"""set  uselist=False for submission grade
 
-Revision ID: 37d78a7a50cb
-Revises: 1c7555eff29c
-Create Date: 2023-02-24 18:36:14.467039
+Revision ID: 672186f61222
+Revises: 1dac60e45bb3
+Create Date: 2023-02-27 23:52:18.628768
 
 """
+
 # revision identifiers, used by Alembic.
-revision = "37d78a7a50cb"
-down_revision = "1c7555eff29c"
+revision = "672186f61222"
+down_revision = "1dac60e45bb3"
 branch_labels = None
 depends_on = None
 

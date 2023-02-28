@@ -1,14 +1,14 @@
-"""update training session time type
+"""update fk relational name
 
-Revision ID: da66ebf96334
-Revises: a6d257f8298c
-Create Date: 2023-02-22 11:37:49.750462
+Revision ID: 1dac60e45bb3
+Revises: 4abc10fdef81
+Create Date: 2023-02-27 23:39:58.968244
 
 """
 
 # revision identifiers, used by Alembic.
-revision = "da66ebf96334"
-down_revision = "a6d257f8298c"
+revision = "1dac60e45bb3"
+down_revision = "4abc10fdef81"
 branch_labels = None
 depends_on = None
 
