@@ -5,6 +5,10 @@ from pydantic import BaseSettings
 
 load_dotenv(verbose=True)
 
+"""
+    Common settings file
+"""
+
 
 class Settings(BaseSettings):
 

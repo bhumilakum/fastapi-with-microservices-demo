@@ -7,6 +7,10 @@ from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/user", tags=["Users"])
 
+"""
+    to get the list of all the users and based on usertype
+"""
+
 
 @router.get("/", response_model=schemas_user.ShowUserList)
 def get_all(
@@ -26,6 +30,11 @@ def get_all(
     return api_user.get_all(db, user_type, skip, limit)
 
 
+"""
+    to get single user profile
+"""
+
+
 @router.get("/{id}", response_model=schemas_user.ShowUser)
 def show(
     id: int,
@@ -35,6 +44,11 @@ def show(
     ),
 ):
     return api_user.show(id, db)
+
+
+"""
+    to add new user (mentor or trainee)
+"""
 
 
 @router.post(
@@ -50,6 +64,11 @@ def create(
     return api_user.create(request, db)
 
 
+"""
+    to update user profile
+"""
+
+
 @router.patch(
     "/{id}", response_model=schemas_user.ShowUser, status_code=status.HTTP_202_ACCEPTED
 )
@@ -62,6 +81,11 @@ def update(
     ),
 ):
     return api_user.update(id, request, db)
+
+
+"""
+    to delete user profile
+"""
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

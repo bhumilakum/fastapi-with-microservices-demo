@@ -7,13 +7,9 @@ app = FastAPI()
 
 models.Base.metadata.create_all(engine)
 
+# include all routers
 app.include_router(authentication.router)
 app.include_router(user.router)
 app.include_router(training_session.router)
 app.include_router(assignment.router)
 app.include_router(submission.router)
-
-
-# @app.get("/")
-# async def index():
-#     return {"Real": "Python"}

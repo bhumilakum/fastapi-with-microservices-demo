@@ -11,6 +11,11 @@ from sqlalchemy.orm import Session
 router = APIRouter(prefix="/assignment_submission", tags=["AssignmentSubmission"])
 
 
+"""
+    to review trainee submission details
+"""
+
+
 @router.get("/", response_model=schemas_submission.ShowSubmissionList)
 def get_all(
     db: Session = Depends(database.get_db),
@@ -26,6 +31,11 @@ def get_all(
     return api_submission.get_all(
         db, current_user, session, assignment, user, skip, limit
     )
+
+
+"""
+    to review all submission done by the trainee
+"""
 
 
 @router.get(
@@ -46,6 +56,11 @@ def get_my_submission(
     )
 
 
+"""
+    to get information about the single submission with score
+"""
+
+
 @router.get("/{id}", response_model=schemas_submission.ShowSubmission)
 def show(
     id: int,
@@ -55,6 +70,11 @@ def show(
     ),
 ):
     return api_submission.show(id, db, current_user)
+
+
+"""
+    to submit the assignment details by trainee
+"""
 
 
 @router.post(
@@ -72,6 +92,11 @@ def create(
     return api_submission.create(request, db, current_user)
 
 
+"""
+    to get detials about submitted assignments and due assignments
+"""
+
+
 @router.patch(
     "/my_submission/{id}", response_model=schemas_submission.ShowSubmissionFew
 )
@@ -86,6 +111,11 @@ def update_trainee_submission(
     return api_submission.update_trainee_submission(id, request, db, current_user)
 
 
+"""
+    to submit assignment grade and remarks by mentor
+"""
+
+
 @router.patch("/{id}", response_model=schemas_submission.ShowSubmission)
 def update(
     id: int,
@@ -96,6 +126,11 @@ def update(
     ),
 ):
     return api_submission.update(id, request, db)
+
+
+"""
+    to remove submission
+"""
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

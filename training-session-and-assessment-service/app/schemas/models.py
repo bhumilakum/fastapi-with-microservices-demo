@@ -14,6 +14,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
+# model to store M2M data for training session and user to manage user attendence
 session_attendee = Table(
     "session_attendee",
     Base.metadata,
@@ -24,6 +25,7 @@ session_attendee = Table(
 )
 
 
+# The common fields that needs to be used in all the model
 class BaseColumn(object):
     created_on = Column(DateTime, server_default=func.now())
     updated_on = Column(
