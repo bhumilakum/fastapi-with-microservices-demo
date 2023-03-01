@@ -25,3 +25,11 @@ class SubmissionFilter(str, enum.Enum):
 class SubmissionResultEnum(enum.Enum):
     PASS = "pass"
     FAIL = "fail"
+
+
+class AssignmentFilter(str, enum.Enum):
+    submitted_assignment = "submitted_assignment"
+    pending_assignment = "pending_assignment"
+    due_assignment = "due_assignment"
+    due_today = "due_today"
+    

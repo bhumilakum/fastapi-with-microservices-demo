@@ -47,6 +47,7 @@ def get_result(assignment, grades):
 def get_all(
     db: Session,
     current_user: schemas_user.User,
+    session: int,
     assignment: int,
     user: int,
     skip: int,
@@ -61,14 +62,27 @@ def get_all(
         if user is not None:
             filter_dict.append(models.Submission.user_fk == user)
 
-        submissions = (
-            db.query(models.Submission)
-            .filter(*filter_dict)
-            .order_by(*order_dict)
-            .offset(skip)
-            .limit(limit)
-            .all()
-        )
+        if session is not None:
+            submissions = (
+                db.query(models.Submission)
+                .join(models.Assignment)
+                .join(models.TrainingSession)
+                .filter(models.TrainingSession.id == session)
+                .filter(*filter_dict)
+                .order_by(*order_dict)
+                .offset(skip)
+                .limit(limit)
+                .all()
+            )
+        else:
+            submissions = (
+                db.query(models.Submission)
+                .filter(*filter_dict)
+                .order_by(*order_dict)
+                .offset(skip)
+                .limit(limit)
+                .all()
+            )
         return {"submissions": submissions, "skip": skip, "limit": limit}
     except Exception as e:
         print("Error in getting all submissions. ", str(e))
