@@ -9,6 +9,12 @@ from sqlalchemy.orm import Session
 router = APIRouter(prefix="/training_session", tags=["TrainingSessions"])
 
 
+"""
+    to get information about all the training sessions,
+    it also allows some session filter as well based on timeline.
+"""
+
+
 @router.get("/", response_model=schemas_training_session.ShowTrainingSessionList)
 def get_all(
     db: Session = Depends(database.get_db),
@@ -27,6 +33,11 @@ def get_all(
     return api_training_session.get_all(db, current_user, session_filter, skip, limit)
 
 
+"""
+    to get single session detail
+"""
+
+
 @router.get("/{id}", response_model=schemas_training_session.ShowTrainingSession)
 def show(
     id: int,
@@ -36,6 +47,11 @@ def show(
     ),
 ):
     return api_training_session.show(id, db)
+
+
+"""
+    to add/create new session with its detail
+"""
 
 
 @router.post(
@@ -53,6 +69,11 @@ def create(
     return api_training_session.create(request, db)
 
 
+"""
+    to update session details and also manage attendees presence for the session
+"""
+
+
 @router.patch("/{id}", response_model=schemas_training_session.ShowTrainingSession)
 def update(
     id: int,
@@ -63,6 +84,11 @@ def update(
     ),
 ):
     return api_training_session.update(id, request, db)
+
+
+"""
+    to remove any session
+"""
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

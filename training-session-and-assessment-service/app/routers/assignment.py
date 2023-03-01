@@ -12,6 +12,11 @@ from sqlalchemy.orm import Session
 router = APIRouter(prefix="/training_assignment", tags=["TrainingAssignments"])
 
 
+"""
+    to get information about the session related assignments
+"""
+
+
 @router.get("/", response_model=schemas_assignment.ShowAssignmentList)
 def get_all(
     db: Session = Depends(database.get_db),
@@ -32,6 +37,11 @@ def get_all(
     )
 
 
+"""
+    The trainee can get all the information about the assignments
+"""
+
+
 @router.get("/trainee_report", response_model=schemas_assignment.ShowAssignmentList)
 def show_trainee_report(
     db: Session = Depends(database.get_db),
@@ -47,6 +57,11 @@ def show_trainee_report(
     )
 
 
+"""
+    to get single assignment details
+"""
+
+
 @router.get("/{id}", response_model=schemas_assignment.ShowAssignment)
 def show(
     id: int,
@@ -56,6 +71,11 @@ def show(
     ),
 ):
     return api_assignment.show(id, db)
+
+
+"""
+    to add new assignment related to the session
+"""
 
 
 @router.post(
@@ -73,6 +93,11 @@ def create(
     return api_assignment.create(request, db)
 
 
+"""
+    to update the assignment related to the session
+"""
+
+
 @router.patch("/{id}", response_model=schemas_assignment.ShowAssignment)
 def update(
     id: int,
@@ -83,6 +108,11 @@ def update(
     ),
 ):
     return api_assignment.update(id, request, db)
+
+
+"""
+    to remove any assignment related to the session
+"""
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

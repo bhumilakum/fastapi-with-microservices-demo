@@ -9,6 +9,11 @@ from sqlalchemy.orm import Session
 router = APIRouter(tags=["Authentication"])
 
 
+"""
+    user login
+"""
+
+
 @router.post("/login")
 def login(
     request: OAuth2PasswordRequestForm = Depends(),
@@ -28,6 +33,11 @@ def login(
         data={"sub": user.email, "user_type": user.user_type.value}
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+"""
+    user logout
+"""
 
 
 @router.post("/logout")
