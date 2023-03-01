@@ -23,7 +23,9 @@ def get_all(
     skip: int = 0,
     limit: int = 50,
 ):
-    return api_submission.get_all(db, current_user, session, assignment, user, skip, limit)
+    return api_submission.get_all(
+        db, current_user, session, assignment, user, skip, limit
+    )
 
 
 @router.get(

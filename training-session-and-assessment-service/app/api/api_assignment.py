@@ -96,7 +96,11 @@ def trainee_assignment(
         if assignment_filter is not None:
             if assignment_filter == "submitted_assignment":
                 assignments = submitted_assignment
-            elif assignment_filter in ["pending_assignment", "due_assignment", "due_today"]:
+            elif assignment_filter in [
+                "pending_assignment",
+                "due_assignment",
+                "due_today",
+            ]:
                 assignment_ids = [record.id for record in submitted_assignment]
                 filter_dict = [~models.Assignment.id.in_(assignment_ids)]
                 if assignment_filter == "due_assignment":

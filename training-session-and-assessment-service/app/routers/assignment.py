@@ -5,9 +5,9 @@ from app.api import api_assignment
 from app.authentication import oauth2
 from app.core import database
 from app.schemas import schemas_assignment, schemas_user
+from app.schemas.enums import AssignmentFilter
 from fastapi import APIRouter, Depends, Query, Security, status
 from sqlalchemy.orm import Session
-from app.schemas.enums import AssignmentFilter
 
 router = APIRouter(prefix="/training_assignment", tags=["TrainingAssignments"])
 

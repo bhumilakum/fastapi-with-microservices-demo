@@ -32,4 +32,3 @@ class AssignmentFilter(str, enum.Enum):
     pending_assignment = "pending_assignment"
     due_assignment = "due_assignment"
     due_today = "due_today"
-    
