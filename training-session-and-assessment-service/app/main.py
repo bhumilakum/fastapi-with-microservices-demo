@@ -1,9 +1,12 @@
+from app.core.config import settings
 from app.core.database import engine
 from app.routers import assignment, authentication, submission, training_session, user
 from app.schemas import models
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title=settings.APPLICATION_TITLE,
+)
 
 models.Base.metadata.create_all(engine)
 

@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     JWT_REFRESH_SECRET_KEY: str = os.environ.get("JWT_REFRESH_SECRET_KEY")
 
     USER_TYPE: str = os.environ.get("USER_TYPE", "admin,mentor,trainee")
+    APPLICATION_TITLE: str = os.environ.get("APPLICATION_TITLE", "Application")
 
     class Config:
         env_file = ".env"
