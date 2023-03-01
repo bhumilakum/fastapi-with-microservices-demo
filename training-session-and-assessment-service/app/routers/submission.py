@@ -17,16 +17,19 @@ def get_all(
     current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
+    session: Union[int, None] = None,
     assignment: Union[int, None] = None,
     user: Union[int, None] = None,
     skip: int = 0,
     limit: int = 50,
 ):
-    return api_submission.get_all(db, current_user, assignment, user, skip, limit)
+    return api_submission.get_all(
+        db, current_user, session, assignment, user, skip, limit
+    )
 
 
 @router.get(
-    "/my_submission", response_model=schemas_submission.ShowTraineeSubmissionList
+    "/trainee_submission", response_model=schemas_submission.ShowTraineeSubmissionList
 )
 def get_my_submission(
     db: Session = Depends(database.get_db),

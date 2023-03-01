@@ -72,6 +72,62 @@ def get_all(
         )
 
 
+def trainee_assignment(
+    db: Session,
+    current_user: schemas_user.User,
+    assignment_filter: str,
+    skip: int,
+    limit: int,
+):
+    try:
+        filter_dict = []
+        order_dict = [models.Assignment.given_date.desc()]
+
+        submitted_assignment = (
+            db.query(models.Assignment)
+            .join(models.Submission)
+            .filter(models.Submission.trainee_user == current_user)
+            .order_by(*order_dict)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+        if assignment_filter is not None:
+            if assignment_filter == "submitted_assignment":
+                assignments = submitted_assignment
+            elif assignment_filter in [
+                "pending_assignment",
+                "due_assignment",
+                "due_today",
+            ]:
+                assignment_ids = [record.id for record in submitted_assignment]
+                filter_dict = [~models.Assignment.id.in_(assignment_ids)]
+                if assignment_filter == "due_assignment":
+                    filter_dict.append(models.Assignment.due_date < date.today())
+                if assignment_filter == "due_today":
+                    filter_dict.append(models.Assignment.due_date == date.today())
+                assignments = (
+                    db.query(models.Assignment)
+                    .filter(*filter_dict)
+                    .order_by(*order_dict)
+                    .offset(skip)
+                    .limit(limit)
+                    .all()
+                )
+            else:
+                pass
+        else:
+            pass
+
+        return {"assignments": assignments, "skip": skip, "limit": limit}
+    except Exception as e:
+        print("Error in getting all assignments. ", str(e))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Somthing went wrong!"
+        )
+
+
 def show(id: int, db: Session):
     assignment_query, assignment = get_assignment_query(id, db)
     return assignment
