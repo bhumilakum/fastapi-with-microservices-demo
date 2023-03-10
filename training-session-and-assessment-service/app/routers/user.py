@@ -5,7 +5,7 @@ from app.schemas import enums, schemas_user
 from fastapi import APIRouter, Depends, Security, status
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/user", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["Users"])
 
 """
     to get the list of all the users and based on usertype
@@ -52,7 +52,7 @@ def show(
 
 
 @router.post(
-    "/create", response_model=schemas_user.ShowUser, status_code=status.HTTP_201_CREATED
+    "/", response_model=schemas_user.ShowUser, status_code=status.HTTP_201_CREATED
 )
 def create(
     request: schemas_user.CreateUser,

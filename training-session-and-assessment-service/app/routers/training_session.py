@@ -6,7 +6,7 @@ from app.schemas.enums import TrainingSessionFilter
 from fastapi import APIRouter, Depends, Security, status
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/training_session", tags=["TrainingSessions"])
+router = APIRouter(prefix="/training-sessions", tags=["TrainingSessions"])
 
 
 """
@@ -55,7 +55,7 @@ def show(
 
 
 @router.post(
-    "/create",
+    "/",
     response_model=schemas_training_session.ShowTrainingSession,
     status_code=status.HTTP_201_CREATED,
 )

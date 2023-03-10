@@ -61,7 +61,7 @@ class CreateTrainingSession(BaseModel):
     topic: str
     start_time: datetime
     end_time: datetime
-    user_fk: int
+    user_id: int
     comment: Optional[str] = None
     expected_attendees: Optional[int] = None
     attendees: List[int] = []
@@ -75,7 +75,7 @@ class UpdateTrainingSession(BaseModel):
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
     total_time: Optional[int] = None
-    user_fk: Optional[int] = None
+    user_id: Optional[int] = None
     recording_link: Optional[str] = None
     comment: Optional[str] = None
     expected_attendees: Optional[int] = None
