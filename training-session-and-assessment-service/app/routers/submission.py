@@ -8,7 +8,7 @@ from app.schemas.enums import SubmissionFilter
 from fastapi import APIRouter, Depends, Security, status
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/assignment_submission", tags=["AssignmentSubmission"])
+router = APIRouter(prefix="/assignment-submissions", tags=["AssignmentSubmission"])
 
 
 """
@@ -78,7 +78,7 @@ def show(
 
 
 @router.post(
-    "/create",
+    "/",
     response_model=schemas_submission.ShowSubmissionFew,
     status_code=status.HTTP_201_CREATED,
 )

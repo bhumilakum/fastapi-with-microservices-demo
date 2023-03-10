@@ -58,9 +58,9 @@ def get_all(
         order_dict = [models.Submission.submission_date.desc()]
 
         if assignment is not None:
-            filter_dict.append(models.Submission.assignment_fk == assignment)
+            filter_dict.append(models.Submission.assignment_id == assignment)
         if user is not None:
-            filter_dict.append(models.Submission.user_fk == user)
+            filter_dict.append(models.Submission.user_id == user)
 
         if session is not None:
             submissions = (
@@ -166,7 +166,7 @@ def create(
         new_submission = models.Submission(
             **request.dict(exclude_unset=True),
             submission_date=date.today(),
-            user_fk=current_user.id,
+            user_id=current_user.id,
         )
 
         db.add(new_submission)

@@ -9,7 +9,7 @@ from app.schemas.enums import AssignmentFilter
 from fastapi import APIRouter, Depends, Query, Security, status
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/training_assignment", tags=["TrainingAssignments"])
+router = APIRouter(prefix="/training-assignments", tags=["TrainingAssignments"])
 
 
 """
@@ -79,7 +79,7 @@ def show(
 
 
 @router.post(
-    "/create",
+    "/",
     response_model=schemas_assignment.ShowAssignment,
     status_code=status.HTTP_201_CREATED,
 )

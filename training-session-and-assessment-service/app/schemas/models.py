@@ -55,7 +55,7 @@ class TrainingSession(Base, BaseColumn):
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     total_time = Column(Integer)
-    user_fk = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
     recording_link = Column(String)
     comment = Column(String)
     expected_attendees = Column(Integer)
@@ -90,8 +90,8 @@ class Submission(Base, BaseColumn):
     __tablename__ = "submission"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_fk = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
-    assignment_fk = Column(Integer, ForeignKey("assignment.id", ondelete="SET NULL"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    assignment_id = Column(Integer, ForeignKey("assignment.id", ondelete="SET NULL"))
     submission_detail = Column(String)
     submission_date = Column(Date)
     obtained_score = Column(Float)
@@ -110,7 +110,7 @@ class Grade(Base, BaseColumn):
     __tablename__ = "grade"
 
     id = Column(Integer, primary_key=True, index=True)
-    submission_fk = Column(Integer, ForeignKey("submission.id", ondelete="SET NULL"))
+    submission_id = Column(Integer, ForeignKey("submission.id", ondelete="SET NULL"))
     knowledge = Column(Float)
     body_language = Column(Float)
     confidence = Column(Float)

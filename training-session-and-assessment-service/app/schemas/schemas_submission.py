@@ -62,7 +62,7 @@ class ShowTraineeSubmissionList(BaseModel):
 
 
 class CreateSubmission(BaseModel):
-    assignment_fk: int
+    assignment_id: int
     submission_detail: str
     submission_comment: Optional[str] = None
 
@@ -91,7 +91,7 @@ class UpdateSubmission(BaseModel):
 
 
 class UpdateTraineeSubmission(BaseModel):
-    assignment_fk: Optional[int] = None
+    assignment_id: Optional[int] = None
     submission_detail: Optional[str] = None
     submission_comment: Optional[str] = None
 
