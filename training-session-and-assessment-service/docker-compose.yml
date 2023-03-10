@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    network_mode: "host"
+
+    container_name: Training-Session

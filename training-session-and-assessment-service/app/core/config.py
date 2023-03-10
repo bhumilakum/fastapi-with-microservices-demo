@@ -30,6 +30,8 @@ class Settings(BaseSettings):
 
     USER_TYPE: str = os.environ.get("USER_TYPE", "admin,mentor,trainee")
     APPLICATION_TITLE: str = os.environ.get("APPLICATION_TITLE", "Application")
+    APPLICATION_API_VERSION: str = os.environ.get("APPLICATION_API_VERSION", "/v1")
+    APPLICATION_VERSION: str = os.environ.get("APPLICATION_VERSION", "1.0.0")
 
     class Config:
         env_file = ".env"
