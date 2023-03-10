@@ -2,7 +2,7 @@ from app.core.config import settings
 from app.core.database import engine
 from app.routers import assignment, authentication, submission, training_session, user
 from app.schemas import models
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 
 app = FastAPI(
     title=settings.APPLICATION_TITLE,
@@ -12,7 +12,8 @@ app = FastAPI(
         "email": "bhumi.lakum@gmail.com",
     },
     openapi_url=f"{settings.APPLICATION_API_VERSION}/openapi.json",
-    docs_url="/documentation", redoc_url=None
+    docs_url="/documentation",
+    redoc_url=None,
 )
 
 models.Base.metadata.create_all(engine)

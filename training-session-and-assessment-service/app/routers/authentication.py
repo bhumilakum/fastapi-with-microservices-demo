@@ -33,4 +33,3 @@ def login(
         data={"sub": user.email, "user_type": user.user_type.value}
     )
     return {"access_token": access_token, "token_type": "bearer"}
-

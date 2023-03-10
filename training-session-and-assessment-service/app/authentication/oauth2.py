@@ -1,10 +1,13 @@
 from app.authentication import auth_token
 from app.core import database
+from app.core.config import settings
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 from sqlalchemy.orm import Session
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.APPLICATION_API_VERSION}/login"
+)
 
 
 def get_current_user(
