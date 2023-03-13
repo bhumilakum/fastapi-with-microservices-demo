@@ -1,6 +1,7 @@
 from app.authentication.password_hashing import Hash
+from app.core.email_service import send_email_background
 from app.schemas import models, schemas_user
-from fastapi import HTTPException, status
+from fastapi import BackgroundTasks, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -36,13 +37,25 @@ def show(id: int, db: Session):
     return user
 
 
-def create(request: schemas_user.CreateUser, db: Session):
+def create(
+    request: schemas_user.CreateUser, db: Session, background_tasks: BackgroundTasks
+):
     try:
         request.password = Hash.bcrypt(request.password)
         new_user = models.User(**request.dict())
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+
+        # send a welcome email to the user
+        body = {
+            "username": f"{new_user.first_name} {new_user.last_name}"
+            if new_user.first_name
+            else "There"
+        }
+        data_dict = {"email": [new_user.email], "body": body}
+        send_email_background(background_tasks, "Welcome!", data_dict)
+
         return new_user
     except Exception as e:
         print("Error in creating a user. ", str(e))

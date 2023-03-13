@@ -33,6 +33,14 @@ class Settings(BaseSettings):
     APPLICATION_API_VERSION: str = os.environ.get("APPLICATION_API_VERSION", "/v1")
     APPLICATION_VERSION: str = os.environ.get("APPLICATION_VERSION", "1.0.0")
 
+    # email service
+    MAIL_USERNAME: str = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD: str = os.getenv("MAIL_PASSWORD")
+    MAIL_FROM: str = os.getenv("MAIL_FROM")
+    MAIL_PORT: int = os.getenv("MAIL_PORT")
+    MAIL_SERVER: str = os.getenv("MAIL_SERVER")
+    MAIL_FROM_NAME: str = os.getenv("MAIL_FROM_NAME")
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
