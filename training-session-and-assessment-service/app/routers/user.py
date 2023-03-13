@@ -2,7 +2,7 @@ from app.api import api_user
 from app.authentication import oauth2
 from app.core import database
 from app.schemas import enums, schemas_user
-from fastapi import APIRouter, Depends, Security, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Security, status
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -56,12 +56,13 @@ def show(
 )
 def create(
     request: schemas_user.CreateUser,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(database.get_db),
     current_user: schemas_user.User = Security(
         oauth2.get_current_user, scopes=["admin", "mentor"]
     ),
 ):
-    return api_user.create(request, db)
+    return api_user.create(request, db, background_tasks)
 
 
 """

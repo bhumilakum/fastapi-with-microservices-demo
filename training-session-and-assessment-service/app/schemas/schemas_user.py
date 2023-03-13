@@ -1,7 +1,7 @@
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from app.schemas.enums import UserTypeEnum
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class User(BaseModel):
@@ -42,3 +42,8 @@ class UpdateUser(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class EmailSchema(BaseModel):
+    email: List[EmailStr]
+    body: Dict[str, Any]
